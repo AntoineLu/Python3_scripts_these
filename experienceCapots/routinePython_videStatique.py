@@ -164,7 +164,7 @@ if choix.sans_capots:
     #plt.xlim(); plt.ylim()
     #plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title("Sans capots")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -183,10 +183,10 @@ if choix.sans_capots:
     
     with open('Graphes/resultats_statique.txt','a') as file:
         file.write(f'\n\n{name}:')
-        file.write(f'\n Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_sansCapots_pCav[0],np.sqrt(np.diag(pcov_sansCapots_pCav))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pCav[1],np.sqrt(np.diag(pcov_sansCapots_pCav))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_sansCapots_pHv[0],np.sqrt(np.diag(pcov_sansCapots_pHv))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pHv[1],np.sqrt(np.diag(pcov_sansCapots_pHv))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_RGA :\n y = ax + b avec a = {ufloat(popt_sansCapots_pRga[0],np.sqrt(np.diag(pcov_sansCapots_pRga))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pRga[1],np.sqrt(np.diag(pcov_sansCapots_pRga))[1]):+.2uS}')
-        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_sansCapots_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pCav))[0]*volumeFour[0])**2 + (popt_sansCapots_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_sansCapots_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pHv))[0]*volumeFour[0])**2 + (popt_sansCapots_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_sansCapots_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pRga))[0]*volumeFour[0])**2 + (popt_sansCapots_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
+        file.write(f'\n Équation de la courbe P_cav:\n y = ax + b avec a = {ufloat(popt_sansCapots_pCav[0],np.sqrt(np.diag(pcov_sansCapots_pCav))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pCav[1],np.sqrt(np.diag(pcov_sansCapots_pCav))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_HV:\n y = ax + b avec a = {ufloat(popt_sansCapots_pHv[0],np.sqrt(np.diag(pcov_sansCapots_pHv))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pHv[1],np.sqrt(np.diag(pcov_sansCapots_pHv))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_RGA:\n y = ax + b avec a = {ufloat(popt_sansCapots_pRga[0],np.sqrt(np.diag(pcov_sansCapots_pRga))[0]):+.2uS} et b = {ufloat(popt_sansCapots_pRga[1],np.sqrt(np.diag(pcov_sansCapots_pRga))[1]):+.2uS}')
+        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA:\n {ufloat(popt_sansCapots_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pCav))[0]*volumeFour[0])**2 + (popt_sansCapots_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_sansCapots_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pHv))[0]*volumeFour[0])**2 + (popt_sansCapots_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_sansCapots_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_sansCapots_pRga))[0]*volumeFour[0])**2 + (popt_sansCapots_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
         file.write('\nMatrice de covariance de la courbe P_cav:')
         file.write(f'\n{pcov_sansCapots_pCav}')
         file.write('\n Matrice de covariance de la courbe P_HV:')
@@ -236,7 +236,7 @@ if choix.capots_10mm:
     #plt.xlim(); plt.ylim()
     #plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title(r"Capots \`{a} 10 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -251,14 +251,14 @@ if choix.capots_10mm:
     print('Équation de la courbe P_HV :\n y = ax + b avec a = %.2E +- %.2E' %(popt_10mm_pHv[0],np.sqrt(np.diag(pcov_10mm_pHv))[0]), 'et b = %.2E +- %.2E' %(popt_10mm_pHv[1],np.sqrt(np.diag(pcov_10mm_pHv))[1]) )
     print('Équation de la courbe P_RGA :\n y = ax + b avec a = %.2E +- %.2E' %(popt_10mm_pRga[0],np.sqrt(np.diag(pcov_10mm_pRga))[0]), 'et b = %.2E +- %.2E' %(popt_10mm_pRga[1],np.sqrt(np.diag(pcov_10mm_pRga))[1]) )
     #Dire dans le CR, on néglige le premier point car il y a une forte augmentation de la pression dues aux fuites d'Ar lors de l'opération des vannes.
-    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pRga))[0]*volumeFour[0])**2 + (popt_10mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
+    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA:\n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pRga))[0]*volumeFour[0])**2 + (popt_10mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
     
     with open('Graphes/resultats_statique.txt','a') as file:
         file.write(f'\n\n{name}:')
-        file.write(f'\n Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_10mm_pCav[0],np.sqrt(np.diag(pcov_10mm_pCav))[0]):+.2uS} et b = {ufloat(popt_10mm_pCav[1],np.sqrt(np.diag(pcov_10mm_pCav))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_10mm_pHv[0],np.sqrt(np.diag(pcov_10mm_pHv))[0]):+.2uS} et b = {ufloat(popt_10mm_pHv[1],np.sqrt(np.diag(pcov_10mm_pHv))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_RGA :\n y = ax + b avec a = {ufloat(popt_10mm_pRga[0],np.sqrt(np.diag(pcov_10mm_pRga))[0]):+.2uS} et b = {ufloat(popt_10mm_pRga[1],np.sqrt(np.diag(pcov_10mm_pRga))[1]):+.2uS}')
-        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pRga))[0]*volumeFour[0])**2 + (popt_10mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
+        file.write(f'\n Équation de la courbe P_cav:\n y = ax + b avec a = {ufloat(popt_10mm_pCav[0],np.sqrt(np.diag(pcov_10mm_pCav))[0]):+.2uS} et b = {ufloat(popt_10mm_pCav[1],np.sqrt(np.diag(pcov_10mm_pCav))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_HV:\n y = ax + b avec a = {ufloat(popt_10mm_pHv[0],np.sqrt(np.diag(pcov_10mm_pHv))[0]):+.2uS} et b = {ufloat(popt_10mm_pHv[1],np.sqrt(np.diag(pcov_10mm_pHv))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_RGA:\n y = ax + b avec a = {ufloat(popt_10mm_pRga[0],np.sqrt(np.diag(pcov_10mm_pRga))[0]):+.2uS} et b = {ufloat(popt_10mm_pRga[1],np.sqrt(np.diag(pcov_10mm_pRga))[1]):+.2uS}')
+        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA:\n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pRga))[0]*volumeFour[0])**2 + (popt_10mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
         file.write('\nMatrice de covariance de la courbe P_cav:')
         file.write(f'\n{pcov_10mm_pCav}')
         file.write('\n Matrice de covariance de la courbe P_HV:')
@@ -308,7 +308,7 @@ if choix.capots_1mm:
     #plt.xlim(); plt.ylim()
     #plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title(r"Capots \`{a} 1 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -323,14 +323,14 @@ if choix.capots_1mm:
     print('Équation de la courbe P_HV :\n y = ax + b avec a = %.2E +- %.2E' %(popt_1mm_pHv[0],np.sqrt(np.diag(pcov_1mm_pHv))[0]), 'et b = %.2E +- %.2E' %(popt_1mm_pHv[1],np.sqrt(np.diag(pcov_1mm_pHv))[1]) )
     print('Équation de la courbe P_RGA :\n y = ax + b avec a = %.2E +- %.2E' %(popt_1mm_pRga[0],np.sqrt(np.diag(pcov_1mm_pRga))[0]), 'et b = %.2E +- %.2E' %(popt_1mm_pRga[1],np.sqrt(np.diag(pcov_1mm_pRga))[1]) )
     #Dire dans le CR, on néglige le premier point car il y a une forte augmentation de la pression dues aux fuites d'Ar lors de l'opération des vannes.
-    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pRga))[0]*volumeFour[0])**2 + (popt_1mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
+    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA:\n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pRga))[0]*volumeFour[0])**2 + (popt_1mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
     
     with open('Graphes/resultats_statique.txt','a') as file:
         file.write(f'\n\n{name}:')
-        file.write(f'\n Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_1mm_pCav[0],np.sqrt(np.diag(pcov_1mm_pCav))[0]):+.2uS} et b = {ufloat(popt_1mm_pCav[1],np.sqrt(np.diag(pcov_1mm_pCav))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_1mm_pHv[0],np.sqrt(np.diag(pcov_1mm_pHv))[0]):+.2uS} et b = {ufloat(popt_1mm_pHv[1],np.sqrt(np.diag(pcov_1mm_pHv))[1]):+.2uS}')
-        file.write(f'\n Équation de la courbe P_RGA :\n y = ax + b avec a = {ufloat(popt_1mm_pRga[0],np.sqrt(np.diag(pcov_1mm_pRga))[0]):+.2uS} et b = {ufloat(popt_1mm_pRga[1],np.sqrt(np.diag(pcov_1mm_pRga))[1]):+.2uS}')
-        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pRga))[0]*volumeFour[0])**2 + (popt_1mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
+        file.write(f'\n Équation de la courbe P_cav:\n y = ax + b avec a = {ufloat(popt_1mm_pCav[0],np.sqrt(np.diag(pcov_1mm_pCav))[0]):+.2uS} et b = {ufloat(popt_1mm_pCav[1],np.sqrt(np.diag(pcov_1mm_pCav))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_HV:\n y = ax + b avec a = {ufloat(popt_1mm_pHv[0],np.sqrt(np.diag(pcov_1mm_pHv))[0]):+.2uS} et b = {ufloat(popt_1mm_pHv[1],np.sqrt(np.diag(pcov_1mm_pHv))[1]):+.2uS}')
+        file.write(f'\n Équation de la courbe P_RGA:\n y = ax + b avec a = {ufloat(popt_1mm_pRga[0],np.sqrt(np.diag(pcov_1mm_pRga))[0]):+.2uS} et b = {ufloat(popt_1mm_pRga[1],np.sqrt(np.diag(pcov_1mm_pRga))[1]):+.2uS}')
+        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA:\n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pRga[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pRga))[0]*volumeFour[0])**2 + (popt_1mm_pRga[0]*volumeFour[1])**2)/60 ):+.2uS}')
         file.write('\nMatrice de covariance de la courbe P_cav:')
         file.write(f'\n{pcov_1mm_pCav}')
         file.write('\n Matrice de covariance de la courbe P_HV:')

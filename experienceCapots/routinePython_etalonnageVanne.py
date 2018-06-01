@@ -81,11 +81,11 @@ hauteurPlot = largeurPlot/ratioPlot;
 etalonnage_vanne = pd.read_csv('Data/calibrationVanne.csv',skiprows=0, infer_datetime_format = True, error_bad_lines=False)
 del etalonnage_vanne['Taux de fuite He (mbar*L/s)']
 #%% Définition des sources d'erreurs
-erreur_vanne = 1/np.sqrt(6)*0.25/2#0.25 tour d'erreur en distribution triangulaire, tour.
+erreur_vanne = 0.25#0.25 tour d'erreur en distribution normale, tour.
 volume = 3.8
 erreur_volume = 0.1/2/np.sqrt(6)#erreur du volume du setup triangulaire, L (3.8 litres au total)
 erreur_temps = 1.5#erreur prise du temps, exponnentielle +1.5s de la valeur courante
-erreur_jauge = 0.4#40% d'erreur
+erreur_jauge = 0.4#40% d'erreur, constructeur
 erreur_mano = 0.5#50% d'erreur, choisi au pif
 
 #%% Ajout des colonnes d'erreurs
@@ -102,11 +102,18 @@ etalonnage_vanne['erreur fuite jauge1-'] = np.sqrt( (etalonnage_vanne['Delta P j
 etalonnage_vanne['erreur fuite jauge2+'] = np.sqrt( ((-etalonnage_vanne['Delta P jauge2 (mbar)']*volume/etalonnage_vanne['Delta t jauge2 (s)']**2)*erreur_temps)**2 + (etalonnage_vanne['Delta P jauge2 (mbar)']/etalonnage_vanne['Delta t jauge2 (s)']*erreur_volume)**2 + (volume/etalonnage_vanne['Delta t jauge2 (s)']*etalonnage_vanne['erreur pression jauge 2'])**2 )
 etalonnage_vanne['erreur fuite jauge2-'] = np.sqrt( (etalonnage_vanne['Delta P jauge2 (mbar)']/etalonnage_vanne['Delta t jauge2 (s)']*erreur_volume)**2 + (volume/etalonnage_vanne['Delta t jauge2 (s)']*etalonnage_vanne['erreur pression jauge 2'])**2 )
 
+#%% Fonction de fit
+def expFunc(x,a,b):
+    return(a*np.exp(x*b))
+    
+def expFuncCons(x,a,b,c):
+    return(a*np.exp(x*b) + c)
+
 #%% Tracé
 plt.figure(num='etalonnage_vanne', figsize = (largeurPlot, hauteurPlot))
 plt.plot(etalonnage_vanne['nombre tour'], etalonnage_vanne['Taux de fuite N2 (mbar*L/s) Manometre'], 'r.', label= r'Manom\`{e}tre')
 plt.plot(etalonnage_vanne['nombre tour'], etalonnage_vanne['Taux de fuite N2 (mbar*L/s) Jauge'], 'b.', label= 'Jauge')
-        
+    
 plt.legend()
 
 plt.rc('text', usetex=True)
@@ -155,6 +162,9 @@ y_mano = etalonnage_vanne['Taux de fuite N2 (mbar*L/s) Manometre']
 y_jauge = etalonnage_vanne['Taux de fuite N2 (mbar*L/s) Jauge']
 #on supprime tous les NaN
 
+
+#fit dans la région asendante
+#popt, pcov = curve_fit(expFunc, etalonnage_vanne.iloc[10:21,0], etalonnage_vanne.iloc[10:21,4], sigma = etalonnage_vanne.iloc[10:21,16])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
 
 #%% Essais à garder.
 essais = False

@@ -205,7 +205,7 @@ if choix.capots_10mm:
     ax2.set_xticklabels(new_tick_label, rotation=17)
     ax2.set_xlabel(r'Taux de fuite (mbar$\times$L/s)')
     
-    #plt.title("Sans capots")
+    #plt.title(r"Capots \`{a} 10 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -253,7 +253,7 @@ if choix.capots_1mm:
     ax2.set_xticklabels(new_tick_label, rotation=17)
     ax2.set_xlabel(r'Taux de fuite (mbar$\times$L/s)')
     
-    #plt.title("Sans capots")
+    #plt.title(r"Capots \`{a} 1 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.

@@ -99,9 +99,6 @@ print(f'V_f = {ufloat(volumeFour[0],volumeFour[1]):+.2uS} L')
 #on défnit d'abord la fonction linéaire et exp
 def linfunc(x,a,b):
     return(a*x+b)
-    
-def expfunc(x,a,b):
-    return(a*np.exp(x*b))
 
 #%% Choix des graphes à générer (je crée cette classe pour m'entrainer aux classes)        
 choix = Plots_videStatiqueVanneOuverte(True,True,True)
@@ -127,8 +124,8 @@ videStatiqueVanneOuverte_1mm["erreur P_cav (mbar)"] = 0.4*videStatiqueVanneOuver
 if choix.sans_capots:
     func_x = np.linspace(1,6.4,22)
 
-    popt_sansCapots_pCav, pcov_sansCapots_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_sansCapots.iloc[1:5,0], videStatiqueVanneOuverte_sansCapots.iloc[1:5,1])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
-    popt_sansCapots_pHv, pcov_sansCapots_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_sansCapots.iloc[1:5,0], videStatiqueVanneOuverte_sansCapots.iloc[1:5,2])
+    popt_sansCapots_pCav, pcov_sansCapots_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_sansCapots.iloc[1:6,0], videStatiqueVanneOuverte_sansCapots.iloc[1:6,1], sigma = videStatiqueVanneOuverte_sansCapots.iloc[1:6,4])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
+    popt_sansCapots_pHv, pcov_sansCapots_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_sansCapots.iloc[1:6,0], videStatiqueVanneOuverte_sansCapots.iloc[1:6,2], sigma = videStatiqueVanneOuverte_sansCapots.iloc[1:6,5])
 
     plt.figure(num='videStatiqueVanneOuverte_sansCapots_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatiqueVanneOuverte_sansCapots['Temps (min)'],videStatiqueVanneOuverte_sansCapots['P_cav (mbar)'],'r.', label= '$P_{cav}$')
@@ -158,7 +155,7 @@ if choix.sans_capots:
     #plt.xlim(); plt.ylim()
     plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title(r"Sans capots")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -187,15 +184,15 @@ if choix.sans_capots:
 if choix.capots_10mm:
     func_x = np.linspace(.4,3.2,22)
 
-    popt_10mm_pCav, pcov_10mm_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_10mm.iloc[1:6,0], videStatiqueVanneOuverte_10mm.iloc[1:6,1])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
-    popt_10mm_pHv, pcov_10mm_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_10mm.iloc[2:6,0], videStatiqueVanneOuverte_10mm.iloc[2:6,2])
+    popt_10mm_pCav, pcov_10mm_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_10mm.iloc[1:7,0], videStatiqueVanneOuverte_10mm.iloc[1:7,1], sigma = videStatiqueVanneOuverte_10mm.iloc[1:7,4])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
+    popt_10mm_pHv, pcov_10mm_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_10mm.iloc[2:7,0], videStatiqueVanneOuverte_10mm.iloc[2:7,2], sigma = videStatiqueVanneOuverte_10mm.iloc[2:7,5])
 
     plt.figure(num='videStatiqueVanneOuverte_10mm_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatiqueVanneOuverte_10mm['Temps (min)'],videStatiqueVanneOuverte_10mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
     plt.plot(videStatiqueVanneOuverte_10mm['Temps (min)'],videStatiqueVanneOuverte_10mm['P_HV (mbar)'],'b.', label= '$P_{HV}$')
     
     plt.plot(func_x,linfunc(func_x, *popt_10mm_pCav),'r--', label = 'lin(1:6)' )
-    plt.plot(func_x,linfunc(func_x, *popt_10mm_pHv),'b--', label = 'lin(2:6)' )
+    plt.plot(func_x,linfunc(func_x, *popt_10mm_pHv),'b--', label = 'lin(1:5)' )
         
     plt.legend()
 
@@ -218,7 +215,7 @@ if choix.capots_10mm:
     #plt.xlim(); plt.ylim()
     plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title(r"Capots \`{a} 10 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -232,7 +229,7 @@ if choix.capots_10mm:
     print(f'Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_10mm_pCav[0],np.sqrt(np.diag(pcov_10mm_pCav))[0]):+.2uS} et b = {ufloat(popt_10mm_pCav[1],np.sqrt(np.diag(pcov_10mm_pCav))[1]):+.2uS}')
     print(f'Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_10mm_pHv[0],np.sqrt(np.diag(pcov_10mm_pHv))[0]):+.2uS} et b = {ufloat(popt_10mm_pHv[1],np.sqrt(np.diag(pcov_10mm_pHv))[1]):+.2uS}')
     #Dire dans le CR, on néglige le premier point car il y a une forte augmentation de la pression dues aux fuites d'Ar lors de l'opération des vannes.
-    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')#^2 s'écrit **2 en python
+    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité et HV: \n {ufloat(popt_10mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pCav))[0]*volumeFour[0])**2 + (popt_10mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_10mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_10mm_pHv))[0]*volumeFour[0])**2 + (popt_10mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')#^2 s'écrit **2 en python
     
     with open('Graphes/resultats_statiqueVanneOuverte.txt','a') as file:
         file.write(f'\n\n{name}:')
@@ -247,8 +244,8 @@ if choix.capots_10mm:
 if choix.capots_1mm:
     func_x = np.linspace(0,1.6,22)
 
-    popt_1mm_pCav, pcov_1mm_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_1mm.iloc[1:3,0], videStatiqueVanneOuverte_1mm.iloc[1:3,1])#.iloc[range ou num row, range ou num colonnes], range: #:#, selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
-    popt_1mm_pHv, pcov_1mm_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_1mm.iloc[1:3,0], videStatiqueVanneOuverte_1mm.iloc[1:3,2])
+    popt_1mm_pCav, pcov_1mm_pCav = curve_fit(linfunc, videStatiqueVanneOuverte_1mm.iloc[1:4,0], videStatiqueVanneOuverte_1mm.iloc[1:4,1], sigma = videStatiqueVanneOuverte_1mm.iloc[1:4,4], absolute_sigma = False)#.iloc[range ou num row, range ou num colonnes], range: #:# (attention, n'inclu pas le dernier point), selection: [#, #, #] ici, les 6 premières valeurs de la colonne 0
+    popt_1mm_pHv, pcov_1mm_pHv = curve_fit(linfunc, videStatiqueVanneOuverte_1mm.iloc[1:4,0], videStatiqueVanneOuverte_1mm.iloc[1:4,2], sigma = videStatiqueVanneOuverte_1mm.iloc[1:4,5], absolute_sigma = False)
 
     plt.figure(num='videStatiqueVanneOuverte_1mm_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatiqueVanneOuverte_1mm['Temps (min)'],videStatiqueVanneOuverte_1mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
@@ -278,7 +275,7 @@ if choix.capots_1mm:
     #plt.xlim(); plt.ylim()
     plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
-    #plt.title("Sans capots")
+    plt.title(r"Capots \`{a} 1 mm")
     plt.tight_layout()#pour séparer un peu les plots
     
     #export en png et pgf pour latex.
@@ -292,13 +289,13 @@ if choix.capots_1mm:
     print(f'Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_1mm_pCav[0],np.sqrt(np.diag(pcov_1mm_pCav))[0]):+.2uS} et b = {ufloat(popt_1mm_pCav[1],np.sqrt(np.diag(pcov_1mm_pCav))[1]):+.2uS}')
     print(f'Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_1mm_pHv[0],np.sqrt(np.diag(pcov_1mm_pHv))[0]):+.2uS} et b = {ufloat(popt_1mm_pHv[1],np.sqrt(np.diag(pcov_1mm_pHv))[1]):+.2uS}')
     #Dire dans le CR, on néglige le premier point car il y a une forte augmentation de la pression dues aux fuites d'Ar lors de l'opération des vannes.
-    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')#^2 s'écrit **2 en python
+    print(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité et HV: \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')#^2 s'écrit **2 en python
     
     with open('Graphes/resultats_statiqueVanneOuverte.txt','a') as file:
         file.write(f'\n\n{name}:')
         file.write(f'\n Équation de la courbe P_cav :\n y = ax + b avec a = {ufloat(popt_1mm_pCav[0],np.sqrt(np.diag(pcov_1mm_pCav))[0]):+.2uS} et b = {ufloat(popt_1mm_pCav[1],np.sqrt(np.diag(pcov_1mm_pCav))[1]):+.2uS}')
         file.write(f'\n Équation de la courbe P_HV :\n y = ax + b avec a = {ufloat(popt_1mm_pHv[0],np.sqrt(np.diag(pcov_1mm_pHv))[0]):+.2uS} et b = {ufloat(popt_1mm_pHv[1],np.sqrt(np.diag(pcov_1mm_pHv))[1]):+.2uS}')
-        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité, HV et RGA : \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')
+        file.write(f'\nTaux de fuite (mbar×L/s) donné par la jauge cavité et HV: \n {ufloat(popt_1mm_pCav[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pCav))[0]*volumeFour[0])**2 + (popt_1mm_pCav[0]*volumeFour[1])**2)/60 ):+.2uS}, {ufloat(popt_1mm_pHv[0]*volumeFour[0]/60,np.sqrt( (np.sqrt(np.diag(pcov_1mm_pHv))[0]*volumeFour[0])**2 + (popt_1mm_pHv[0]*volumeFour[1])**2)/60 ):+.2uS}')
         file.write('\nMatrice de covariance de la courbe P_cav:')
         file.write(f'\n{pcov_1mm_pCav}')
         file.write('\n Matrice de covariance de la courbe P_HV:')
