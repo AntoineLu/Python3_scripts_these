@@ -131,8 +131,8 @@ if choix.sans_capots:
 
     plt.figure(num='videStatique_sansCapots_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatique_sansCapots['Temps (min)'],videStatique_sansCapots['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    plt.plot(videStatique_sansCapots['Temps (min)'],videStatique_sansCapots['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    plt.plot(videStatique_sansCapots['Temps (min)'],videStatique_sansCapots['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
+    plt.plot(videStatique_sansCapots['Temps (min)'],videStatique_sansCapots['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    plt.plot(videStatique_sansCapots['Temps (min)'],videStatique_sansCapots['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
     
     plt.plot(func_x,linfunc(func_x, *popt_sansCapots_pCav),'r--', label = 'lin(1:7)' )
     plt.plot(func_x,linfunc(func_x, *popt_sansCapots_pHv),'b--', label = 'lin(1:7)' )
@@ -203,8 +203,8 @@ if choix.capots_10mm:
 
     plt.figure(num='videStatique_10mm_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatique_10mm['Temps (min)'],videStatique_10mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    plt.plot(videStatique_10mm['Temps (min)'],videStatique_10mm['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    plt.plot(videStatique_10mm['Temps (min)'],videStatique_10mm['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
+    plt.plot(videStatique_10mm['Temps (min)'],videStatique_10mm['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    plt.plot(videStatique_10mm['Temps (min)'],videStatique_10mm['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
     
     plt.plot(func_x,linfunc(func_x, *popt_10mm_pCav),'r--', label = 'lin(1:9)' )
     plt.plot(func_x,linfunc(func_x, *popt_10mm_pHv),'b--', label = 'lin(1:9)' )
@@ -275,8 +275,8 @@ if choix.capots_1mm:
 
     plt.figure(num='videStatique_1mm_fit', figsize = (largeurPlot, hauteurPlot))
     plt.plot(videStatique_1mm['Temps (min)'],videStatique_1mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    plt.plot(videStatique_1mm['Temps (min)'],videStatique_1mm['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    plt.plot(videStatique_1mm['Temps (min)'],videStatique_1mm['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
+    plt.plot(videStatique_1mm['Temps (min)'],videStatique_1mm['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    plt.plot(videStatique_1mm['Temps (min)'],videStatique_1mm['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
     
     plt.plot(func_x,linfunc(func_x, *popt_1mm_pCav),'r--', label = 'lin(1:6)' )
     plt.plot(func_x,linfunc(func_x, *popt_1mm_pHv),'b--', label = 'lin(1:6)' )

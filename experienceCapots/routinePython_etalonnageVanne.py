@@ -83,9 +83,9 @@ del etalonnage_vanne['Taux de fuite He (mbar*L/s)']
 #%% Définition des sources d'erreurs
 erreur_vanne = 0.25#0.25 tour d'erreur en distribution normale, tour.
 volume = 3.8
-erreur_volume = 0.1/2/np.sqrt(6)#erreur du volume du setup triangulaire, L (3.8 litres au total)
+erreur_volume = 0.1#erreur du volume du setup, L (3.8 litres au total)
 erreur_temps = 1.5#erreur prise du temps, exponnentielle +1.5s de la valeur courante
-erreur_jauge = 0.4#40% d'erreur, constructeur
+erreur_jauge = 0.4/3#40% d'erreur, constructeur divisé par 3 car 40% est l'erreur maximale tolérée.
 erreur_mano = 0.5#50% d'erreur, choisi au pif
 
 #%% Ajout des colonnes d'erreurs
@@ -134,10 +134,13 @@ plt.xlabel('Ouverture de la vanne (tour)')
 #plt.axes().yaxis.set_tick_params(which='minor', right = 'off')
 #plt.tick_params(axis='y', which='minor')
 #plt.xlim(); plt.ylim()
-plt.annotate(r'$Q = 1\times 10^{-1}$ mbar$\times$L/s $\Rightarrow$ 12,75 tours', xy=(12.75, 1e-1), xytext=(14, 2e-1),
+plt.annotate(r'$Q = 1\times 10^{-1}$ mbar$\times$L/s $\Rightarrow\simeq$ 12,75 tours', xy=(12.8, 1e-1), xytext=(14, 1e-1),
             arrowprops=dict(facecolor='black', shrink = 0, width = 1, headwidth = 4, headlength = 3),
             verticalalignment='center',
-            horizontalalignment='left')
+            horizontalalignment='left',
+            backgroundcolor='white')
+#https://stackoverflow.com/questions/23696898/adjusting-text-background-transparency
+#https://matplotlib.org/api/text_api.html
 
 plt.minorticks_on()
 plt.grid(b = True, which = 'major', axis = 'both')

@@ -97,9 +97,33 @@ ratioPlot = 1.5;
 hauteurPlot = largeurPlot/ratioPlot;
 volumeFour = 4500#en litre
 
-#on défnit d'abord la fonction linéaire
+#on défnit d'abord les fonctions
 def linfunc(x,a,b):
-    return(a*x+b)
+    return((a*x+b))
+    
+def invlinfunc(x,a,b):
+    return(1/(a*x+b))
+    
+def invfunc(x,a,b):
+    return(a/x+b)
+
+def expfunc(x,a,b):
+    return(a*np.exp(b*x))
+    
+def expafunc(x,a,b,c):
+    return(a*b**(c*x))
+    
+def expconstfunc(x,a,b,c):
+    return(a*np.exp(b*x)+c)
+    
+def poly2func(x,a,b,c):
+    return(a*x**2+b*x+c)
+    
+def poly5func(x,a,b,c,d,e,f):
+    return(a*x**5 + b*x**4 + c*x**3 + d*x**2 + e*x + f)
+    
+def poly6func(x,a,b,c,d,e,f,g):
+    return(a*x**6 + b*x**5 + c*x**4 + d*x**3 + e*x**2 + f*x + g)
 
 #%% Choix des graphes à générer (je crée cette classe pour m'entrainer aux classes)        
 choix = Plots_ouvertureVanne(True,True,True)
@@ -126,8 +150,8 @@ if choix.sans_capots:
     fig = plt.figure(num='ouvertureVanne_sansCapots', figsize = (largeurPlot, hauteurPlot))
     fig, ax1 = plt.subplots()
     ax1.plot(ouvertureVanne_sansCapots["ouverture vanne (tours)"],ouvertureVanne_sansCapots['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    ax1.plot(ouvertureVanne_sansCapots["ouverture vanne (tours)"],ouvertureVanne_sansCapots['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    ax1.plot(ouvertureVanne_sansCapots["ouverture vanne (tours)"],ouvertureVanne_sansCapots['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
+    ax1.plot(ouvertureVanne_sansCapots["ouverture vanne (tours)"],ouvertureVanne_sansCapots['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    ax1.plot(ouvertureVanne_sansCapots["ouverture vanne (tours)"],ouvertureVanne_sansCapots['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
         
     plt.legend()
 
@@ -174,9 +198,13 @@ if choix.capots_10mm:
     fig = plt.figure(num='ouvertureVanne_10mm', figsize = (largeurPlot, hauteurPlot))
     fig, ax1 = plt.subplots()
     ax1.plot(ouvertureVanne_10mm["ouverture vanne (tours)"],ouvertureVanne_10mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    ax1.plot(ouvertureVanne_10mm["ouverture vanne (tours)"],ouvertureVanne_10mm['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    ax1.plot(ouvertureVanne_10mm["ouverture vanne (tours)"],ouvertureVanne_10mm['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
-        
+    ax1.plot(ouvertureVanne_10mm["ouverture vanne (tours)"],ouvertureVanne_10mm['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    ax1.plot(ouvertureVanne_10mm["ouverture vanne (tours)"],ouvertureVanne_10mm['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
+    
+    #popt_10mm_pHv, pcov_10mm_pHv = curve_fit(expafunc, ouvertureVanne_10mm.iloc[3:6,0], ouvertureVanne_10mm.iloc[3:6,3], sigma = ouvertureVanne_10mm.iloc[3:6,8], absolute_sigma = False)
+    #func_x = np.linspace(12,12.4,100)
+    #ax1.plot(func_x,expafunc(func_x, *popt_10mm_pHv),'b--', label = 'expafunc(3:5)')
+    
     plt.legend()
 
     plt.minorticks_on()
@@ -184,12 +212,12 @@ if choix.capots_10mm:
     
     ax1.errorbar(ouvertureVanne_10mm['ouverture vanne (tours)'],ouvertureVanne_10mm['P_cav (mbar)'], yerr = ouvertureVanne_10mm['erreur P_cav (mbar)'], fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= '$P_{cav}$')
     ax1.errorbar(ouvertureVanne_10mm['ouverture vanne (tours)'],ouvertureVanne_10mm['P_HV (mbar)'], yerr = ouvertureVanne_10mm['erreur P_HV'], fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= '$P_{HV}$')
-    #plt.errorbar(ouvertureVanne_10mm['Temps (min)'],ouvertureVanne_10mm['P_RGA (mbar)'], yerr = ouvertureVanne_10mm['erreur P_cav (mbar)'], fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= '$P_{RGA}$')
 
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
 
     ax1.set_yscale('log', nonposy = 'mask')
+    #ax1.set_yscale('linear')
     ax1.set_ylabel(r'$P$ (mbar)')
     ax1.set_xscale('linear')#symlog displays a linear interval at 0 vicinity
     ax1.set_xlabel('Ouverture de la vanne (tour)')
@@ -222,8 +250,8 @@ if choix.capots_1mm:
     fig = plt.figure(num='ouvertureVanne_1mm', figsize = (largeurPlot, hauteurPlot))
     fig, ax1 = plt.subplots()
     ax1.plot(ouvertureVanne_1mm["ouverture vanne (tours)"],ouvertureVanne_1mm['P_cav (mbar)'],'r.', label= '$P_{cav}$')
-    ax1.plot(ouvertureVanne_1mm["ouverture vanne (tours)"],ouvertureVanne_1mm['P_HV (mbar)'],'b.', label= '$P_{HV}$')
-    ax1.plot(ouvertureVanne_1mm["ouverture vanne (tours)"],ouvertureVanne_1mm['P_RGA (mbar)'],'k.', label= '$P_{RGA}$')
+    ax1.plot(ouvertureVanne_1mm["ouverture vanne (tours)"],ouvertureVanne_1mm['P_HV (mbar)'],'b*', label= '$P_{HV}$')
+    ax1.plot(ouvertureVanne_1mm["ouverture vanne (tours)"],ouvertureVanne_1mm['P_RGA (mbar)'],'k^', label= '$P_{RGA}$')
         
     plt.legend()
 
@@ -263,7 +291,8 @@ if choix.capots_1mm:
     plt.savefig(('Graphes/'+name+'.pdf'), format = 'pdf', transparent=True)
     plt.savefig(('Graphes/'+name+'.svg'), format = 'svg', transparent=True)
     plt.show()
-#%% Working example
+    
+#%% Minimal Working Example
 workingExample = False
 if workingExample:
     #HEADERS
@@ -288,8 +317,8 @@ if workingExample:
     fig = plt.figure(num='test', figsize = (6.68, 6.68*1.3))
     fig, ax1 = plt.subplots()
     ax1.plot(turns, pressure1, 'r.', label= '$P_1$')
-    ax1.plot(turns, pressure2, 'b.', label= '$P_2$')
-    ax1.plot(turns, pressure3,'k.', label= '$P_3$')
+    ax1.plot(turns, pressure2, 'b*', label= '$P_2$')
+    ax1.plot(turns, pressure3,'k^', label= '$P_3$')
          
     plt.legend()
     

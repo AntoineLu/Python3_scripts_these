@@ -120,8 +120,8 @@ descentePression_1mm["erreur P_cav (mbar)"] = 0.4*descentePression_1mm["P_cav (m
 if choix.P_cav:
     plt.figure(num='pCav', figsize = (largeurPlot, hauteurPlot))
     plt.plot(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_cav (mbar)'],'r.', label= 'sans capots')
-    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_cav (mbar)'],'b.', label= '10 mm')
-    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_cav (mbar)'],'k.', label= '1 mm')
+    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_cav (mbar)'],'b*', label= '10 mm')
+    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_cav (mbar)'],'k^', label= '1 mm')
     plt.legend()
     
     plt.errorbar(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_cav (mbar)'], yerr = descentePression_sansCapots['erreur P_cav (mbar)'], fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= 'sans capots')
@@ -142,6 +142,17 @@ if choix.P_cav:
     xaxis.set_minor_locator(MinorSymLogLocator(1e-1))
     plt.xlabel('Temps (min)')
     
+    plt.annotate(r'Pompage Roots', xy=(3, 12), xytext=(5, 20),
+            arrowprops=dict(facecolor='black', shrink = 0, width = 1, headwidth = 4, headlength = 3),
+            verticalalignment='center',
+            horizontalalignment='left',
+            backgroundcolor='white')
+    plt.annotate(r'Pompage cryog\'{e}nique', xy=(60, 1e-4), xytext=(100, 2e-4),
+            arrowprops=dict(facecolor='black', shrink = 0, width = 1, headwidth = 4, headlength = 3),
+            verticalalignment='center',
+            horizontalalignment='left',
+            backgroundcolor='white')
+    
     #plt.xlim()
     #plt.minorticks_on()
     plt.grid(b = True, which = 'major', axis = 'both')
@@ -159,8 +170,8 @@ if choix.P_cav:
 if choix.P_HV:
     plt.figure(num='pHv', figsize = (largeurPlot, hauteurPlot))
     plt.plot(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_HV (mbar)'],'r.', label= 'sans capots')
-    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_HV (mbar)'],'b.', label= '10 mm')
-    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_HV (mbar)'],'k.', label= '1 mm')
+    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_HV (mbar)'],'b* ', label= '10 mm')
+    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_HV (mbar)'],'k^', label= '1 mm')
     plt.legend()
 
     plt.errorbar(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_HV (mbar)'], yerr = descentePression_sansCapots['erreur P_HV'], fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= 'sans capots')
@@ -192,8 +203,8 @@ if choix.P_HV:
 if choix.P_LV:
     plt.figure(num='pLv', figsize = (largeurPlot, hauteurPlot))
     plt.plot(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_LV (mbar)'],'r.', label= 'sans capots')
-    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_LV (mbar)'],'b.', label= '10 mm')
-    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_LV (mbar)'],'k.', label= '1 mm')
+    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_LV (mbar)'],'b*', label= '10 mm')
+    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_LV (mbar)'],'k^', label= '1 mm')
     plt.legend()
 
     plt.rc('text', usetex=True)
@@ -233,8 +244,8 @@ if choix.Subplots:
     plt.figure(num='pFour', figsize = (largeurPlot, hauteurPlot))
     plt.subplot(2,1,1)
     plt.plot(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_LV (mbar)'],'r.', label= 'sans capots')
-    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_LV (mbar)'],'b.', label= '10 mm')
-    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_LV (mbar)'],'k.', label= '1 mm')
+    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_LV (mbar)'],'b*', label= '10 mm')
+    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_LV (mbar)'],'k^', label= '1 mm')
     plt.legend()
 
     plt.rc('text', usetex=True)
@@ -263,8 +274,8 @@ if choix.Subplots:
 
     plt.subplot(2,1,2)
     plt.plot(descentePression_sansCapots['Temps (min)'],descentePression_sansCapots['P_HV (mbar)'],'r.', label= 'sans capots')
-    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_HV (mbar)'],'b.', label= '10 mm')
-    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_HV (mbar)'],'k.', label= '1 mm')
+    plt.plot(descentePression_10mm['Temps (min)'],descentePression_10mm['P_HV (mbar)'],'b*', label= '10 mm')
+    plt.plot(descentePression_1mm['Temps (min)'],descentePression_1mm['P_HV (mbar)'],'k^', label= '1 mm')
     plt.legend()
 
     plt.rc('text', usetex=True)
