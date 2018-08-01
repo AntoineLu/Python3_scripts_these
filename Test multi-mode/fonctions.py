@@ -11,24 +11,29 @@ import pandas as pd
 from uncertainties import ufloat
 
 #%% Définition des différentes fonctions
-def typeAUncertainty(a):
+def typeAUncertainty(meas, otherUncertaintySources = [0], verbose = False):
     """
     Retourne la valeur moyenne et l'écart-type expérimental d'une série de mesures.
-    a un array 1D contenant les différentes valeurs mesurées.
+    
+    meas
+        un array 1D contenant les différentes valeurs mesurées.
+    otherUncertaintySources
+        un array 1D repérant les valeurs des std_dev des autres formes d'incertitudes. Elles sont ensuites combinées à la somme de l'incertitude de type A. Par défaut, pas d'incertitude supplémentaire.
+    verbose
+        booléen pour afficher la valeur retournée. Par défaut faux.
     """
     try:
-        n = len(a)
-        mean = np.sum(a)/n
-        s2 = 0
-        for a_i in a:
-            s2 = s2 + (a_i - mean)**2
-            s2 = s2/(n-1)
-            std = np.sqrt(s2/n)
+        n = len(meas)
+        mean = np.sum(meas)/n
+        std = np.sqrt(sum((i - mean)**2 for i in meas)/(n*(n-1))) #écart-type expérimental
+        std = np.sqrt(std**2 + sum(i**2 for i in otherUncertaintySources)) # Ajout des autres formes d'incertitudes par la méthode classique de propagation
+
         output = ufloat(mean,std)
-        print('{:.2uS}'.format(output))
+        if verbose: print('{:.2uS}'.format(output),'\n{:.2u}'.format(output))
         return(output)
+        
     except:
-        print('Erreur. a doit être une liste de nombres.')
+        print('Erreur. meas doit être une liste de nombres.')
     
 def expfit(x,a,b):
     """

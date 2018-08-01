@@ -39,26 +39,36 @@ ratioPlot = 1.5;
 hauteurPlot = largeurPlot/ratioPlot;
 
 #%% Type A uncertainty sur un set de données.
-set = [-35.371,-35.427,-35.435]
-meas = typeAUncertainty(set)
-#meas.std_dev = np.sqrt(meas.s**2+0.005**2) #ajout d'autres sources d'incertitudes pour les fréquences (5e-4 pour le Delta f)
-meas.std_dev = np.sqrt(meas.s**2+0.018**2) #ajout d'autres sources d'incertitudes pour les atténuations. Bruit de 0.008 dB (10 MHz à 3 GHz) et 0.018 dB (3 GHz à 6 GHz).
-#meas.std_dev = np.sqrt(meas.s**2+0.03**2) #ajout d'autres sources d'incertitudes pour les longueurs mesurées au pied à coulisse de précision 3/100
-print('{:.2uS}'.format(meas))
-print('{:.2u}'.format(meas))
+vecteur = [] #freq en MHz, longueurs en mm, atténuations en dB
+err = 0.018 #ajout d'autres sources d'incertitudes pour les atténuations. Bruit de 0.008 dB (10 MHz à 3 GHz) et 0.018 dB (3 GHz à 6 GHz).
+#err = 5e-4 #ajout d'autres sources d'incertitudes pour les fréquences (5e-4 MHz pour le Delta f)
+#err = 0.03 #ajout d'autres sources d'incertitudes pour les longueurs mesurées au pied à coulisse de précision 3/100
+
+meas = typeAUncertainty(vecteur,[err],True)
 
 #%% Import des datas
 # À 352 MHz
 C2_352_dF = pd.read_csv('Data/C2_352.csv',skiprows=0, error_bad_lines=False)
 F2_352_dF = pd.read_csv('Data/F2_352.csv',skiprows=0, error_bad_lines=False)
 surcouplage_352 = True #si sur-couplage ou sous couplage de l'antenne incidente.
-Li_mm_352 = ufloat(40.06,0.05) + ufloat(24.96,0.05) + ufloat(99.9,0.05) #longueur de l'antenne incidente utilisée.
-diam_mm_352 = typeAUncertainty([7.83,7.77,7.84,7.85,7.85]) #diamètre de l'antenne incidente utilisée.
+Li_mm_352 = ufloat(40.06,0.03) + ufloat(24.96,0.03) + ufloat(99.9,0.03) #longueur de l'antenne incidente utilisée.
+diam_mm_352 = typeAUncertainty([7.83,7.77,7.84,7.85,7.85],[.03]) #diamètre de l'antenne incidente utilisée.
+
+# À 1301 MHz modes 7AB, cf C1@1301MHz_modes7AB
+C2_1301_modes7AB_dF = pd.read_csv('Data/C2_1301_modes7AB.csv',skiprows=0, error_bad_lines=False)
+F2_1301_modes7AB_dF = pd.read_csv('Data/F2_1301_modes7AB.csv',skiprows=0, error_bad_lines=False)
+surcouplage_352 = True #si sur-couplage ou sous couplage de l'antenne incidente.
+Li_mm_1301_modes7AB = typeAUncertainty([135.06,135.07,135.09,135.11,135.10,135.09],[0.03]) #longueur de l'antenne incidente utilisée.
+diam_1301_modes7AB = typeAUncertainty([7.96,7.89,7.95,7.90,8.09,7.96,7.76],[0.03]) #diamètre de l'antenne incidente utilisée.
 
 #%% Modification en ufloat
 # À 352 MHz
 C2_352_dF = conv_pdToUfloat(C2_352_dF)
 F2_352_dF = conv_pdToUfloat(F2_352_dF)
+
+# À 1301 MHz modes 7AB, cf C1@1301MHz_modes7AB
+C2_1301_modes7AB_dF = conv_pdToUfloat(C2_1301_modes7AB_dF)
+F2_1301_modes7AB_dF = conv_pdToUfloat(F2_1301_modes7AB_dF)
 
 #%% Calcul de Q
 # À 352 MHz
@@ -75,12 +85,57 @@ else:
     F2_352_dF['Qi'] = 2*F2_352_dF['QL']/(1-10**(F2_352_dF['S11 (dB)']/20))
     F2_352_dF['Qt'] = 2*F2_352_dF['QL']*10**(-F2_352_dF['S21 (dB)']/10)*(1-10**(F2_352_dF['S11 (dB)']/20))
     
+# À 1301 MHz modes 7AB, cf C1@1301MHz_modes7AB
+    
 #%% Plot
 #%% À 352 MHz
 popt_C2_352, pcov_C2_352 = curve_fit(expfit, xdata = unumpy.nominal_values(C2_352_dF['Lt (mm)']), ydata = unumpy.nominal_values(C2_352_dF['Qt']), p0 = [1e17,0.1], sigma = unumpy.std_devs(C2_352_dF['Qt']))
 popt_F2_352, pcov_F2_352 = curve_fit(expfit, xdata = unumpy.nominal_values(F2_352_dF['Lt (mm)']), ydata = unumpy.nominal_values(F2_352_dF['Qt']), p0 = [1e17,0.1], sigma = unumpy.std_devs(F2_352_dF['Qt']))
 
 plt.figure(num='Qt vs. Lt @ 352 MHz', figsize = (largeurPlot, hauteurPlot))
+plt.plot(unumpy.nominal_values(F2_352_dF['Lt (mm)']),unumpy.nominal_values(F2_352_dF['Qt']),'b.', label= 'F2 @ 352 MHz')
+plt.plot(unumpy.nominal_values(C2_352_dF['Lt (mm)']),unumpy.nominal_values(C2_352_dF['Qt']),'r.', label= 'C2 @ 352 MHz')
+
+x_th = np.linspace(50,130,50)
+plt.plot(x_th, expfit(x_th, *popt_F2_352),'b--',label= fr'${ufloat(popt_F2_352[0],np.sqrt(np.diag(pcov_F2_352))[0]):.2uSL}\times \exp({ufloat(popt_F2_352[1],np.sqrt(np.diag(pcov_F2_352))[1]):.2uSL} \times l)$')
+plt.plot(x_th, expfit(x_th, *popt_C2_352),'r--',label= fr'${ufloat(popt_C2_352[0],np.sqrt(np.diag(pcov_C2_352))[0]):.2uSL}\times \exp({ufloat(popt_C2_352[1],np.sqrt(np.diag(pcov_C2_352))[1]):.2uSL} \times l)$')
+
+plt.legend()
+
+plt.grid(b = True, which = 'major', axis = 'both')
+    
+plt.errorbar(unumpy.nominal_values(C2_352_dF['Lt (mm)']),unumpy.nominal_values(C2_352_dF['Qt']), xerr = unumpy.std_devs(C2_352_dF['Lt (mm)']) , yerr = unumpy.std_devs(C2_352_dF['Qt']), fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= 'C2err')
+plt.errorbar(unumpy.nominal_values(F2_352_dF['Lt (mm)']),unumpy.nominal_values(F2_352_dF['Qt']), xerr = unumpy.std_devs(F2_352_dF['Lt (mm)']) , yerr = unumpy.std_devs(F2_352_dF['Qt']), fmt='none', ecolor = 'k', elinewidth = 1, capsize = 1, label= 'F2err')
+
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+
+plt.yscale('log', nonposy = 'mask')
+plt.minorticks_on()
+#plt.yscale('linear')
+plt.ylabel(r'Couplage')
+plt.xscale('linear')#symlog displays a linear interval at 0 neighborhood
+plt.xlabel("Longueur d'antenne (mm)")
+#plt.xlim(); plt.ylim()
+    
+plt.minorticks_on()
+plt.grid(b = True, which = 'major', axis = 'both')
+plt.title(r"Caract\'{e}risation des brides C2 et F2 en transmission \`{a} 352 MHz")
+plt.tight_layout()#pour séparer un peu les plots
+    
+name = "QtVsLt_352MHz"
+plt.savefig(('Graphes/'+name+'.png'), format = 'png', transparent=True, dpi = 300)
+plt.savefig(('Graphes/'+name+'.pgf'), format = 'pgf')
+plt.savefig(('Graphes/'+name+'.pdf'), format = 'pdf', transparent=True)
+plt.savefig(('Graphes/'+name+'.svg'), format = 'svg', transparent=True)
+plt.show()
+
+#%% À 1300 MHz
+    # Modes 7A et 7B je crois. cf onglets C2@1301MHz_modes7AB
+#popt_C2_352, pcov_C2_352 = curve_fit(expfit, xdata = unumpy.nominal_values(C2_352_dF['Lt (mm)']), ydata = unumpy.nominal_values(C2_352_dF['Qt']), p0 = [1e17,0.1], sigma = unumpy.std_devs(C2_352_dF['Qt']))
+#popt_F2_352, pcov_F2_352 = curve_fit(expfit, xdata = unumpy.nominal_values(F2_352_dF['Lt (mm)']), ydata = unumpy.nominal_values(F2_352_dF['Qt']), p0 = [1e17,0.1], sigma = unumpy.std_devs(F2_352_dF['Qt']))
+
+plt.figure(num='Qt vs. Lt @ 1301 MHz (modes 7AB)', figsize = (largeurPlot, hauteurPlot))
 plt.plot(unumpy.nominal_values(F2_352_dF['Lt (mm)']),unumpy.nominal_values(F2_352_dF['Qt']),'b.', label= 'F2 @ 352 MHz')
 plt.plot(unumpy.nominal_values(C2_352_dF['Lt (mm)']),unumpy.nominal_values(C2_352_dF['Qt']),'r.', label= 'C2 @ 352 MHz')
 
