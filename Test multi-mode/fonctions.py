@@ -159,7 +159,13 @@ def typeAUncertainty(meas, otherUncertaintySources = [0], verbose = False, langu
         
     except:
         print('Erreur. meas doit être une liste de nombres.')
-    
+
+def linfit(x,a,b):
+    """
+    Retourne la valeur de a × x + b
+    """
+    return(a*x+b)
+   
 def expfit(x,a,b):
     """
     Retourne la valeur de a × exp(b × x)
