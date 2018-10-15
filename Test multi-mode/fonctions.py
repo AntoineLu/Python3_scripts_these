@@ -42,12 +42,19 @@ def couplingCalculator(file, couplage = '', write = ''):
             dataFrame['Qt'] = 2*dataFrame['QL']*10**(-dataFrame['S21 (dB)']/10)*(1-10**(dataFrame['S11 (dB)']/20))
         else:
             print("ERREUR. couplage prend la valeur 'sous' ou 'sur'")
-            
+        
+        
+        sigma = 6.93e6 #conductivité Nb à 300 K
+#        sigma = 5.8e7 #conductivité Cu à 300 K
+        mu0 = 4*np.pi*1e-7
+        
+        dataFrame['R_s Nb 300K'] = (2*np.pi*dataFrame["f (MHz)"]*1e6*mu0/sigma)**.5
+        dataFrame['G'] = dataFrame['R_s Nb 300K'] / (1/dataFrame['QL'] - 1/dataFrame['Qi'] - 1/dataFrame['Qt'])
+        
         if write != '':
-            with open(write, 'w') as f:
-                dataFrame2 = unumpy.nominal_values(dataFrame)
-                dataFrame2.to_csv(f,index = False)
-            
+            dataFrame2 = unumpy.nominal_values(dataFrame)
+            dataFrame2.to_csv(write,index = False)
+                
         return(dataFrame)
         
     except:
