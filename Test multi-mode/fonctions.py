@@ -129,7 +129,7 @@ def typeAUncertainty(meas, otherUncertaintySources = [0], verbose = False, langu
     try:
         n = len(meas)
         mean = np.sum(meas)/n
-        std = np.sqrt(sum((i - mean)**2 for i in meas)/((n-1))) #écart-type expérimental
+        std = np.sqrt(sum((i - mean)**2 for i in meas)/((n-1))) #écart-type expérimental https://ics.utc.fr/PS90/chapitre%202/co/incertitude_type_A.html à corriger avec ce cours, Faut-il encore diviser par 1/sqrt(n) ??
         std = np.sqrt(std**2 + sum(i**2 for i in otherUncertaintySources)) # Ajout des autres formes d'incertitudes par la méthode classique de propagation
 
         output = ufloat(mean,std)
